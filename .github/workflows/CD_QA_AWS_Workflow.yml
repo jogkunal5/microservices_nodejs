@@ -45,7 +45,17 @@ jobs:
           echo EXCHANGE_NAME=ONLINE_STORE >> .env
           echo PORT=8003 >> .env
           cat .env
-          
+
+      - name: Configure AWS CLI
+        run: |
+          aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws configure set default.region eu-central-1
+
+      - name: Create Elastic Beanstalk Application if it does not exist
+        run: |
+          aws elasticbeanstalk describe-applications --application-names nodejs_microservice_shopcart || aws elasticbeanstalk create-application --application-name nodejs_microservice_shopcart
+      
       - name: Generate deployment package
         run: |
           zip -r deploy.zip . -x '*.git'
