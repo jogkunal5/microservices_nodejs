@@ -67,6 +67,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: nodejs_microservice_shopcart
           environment_name: Nodejsmicroserviceshopcart-env
-          version_label: ver-${{ github.sha }}-${{ github.run_id }}
-          region: eu-central-1
+          version_label: ver-${{ github.sha }}-${{ github.run_id }}-${{ github.run_number }}-${{ github.event.release.tag_name }}
+          region: us-east-1
           deployment_package: deploy.zip
