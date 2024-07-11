@@ -4,10 +4,11 @@ Microservice architecture repo using node.js
 
 # Requirement:
 
-NodeJS
-Docker
-Mongodb
-RabbitMQ
+NodeJS,
+Docker,
+Mongodb,
+RabbitMQ,
+NGinx
 
 # Imp commands and notes:
 
