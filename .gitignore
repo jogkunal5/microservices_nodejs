@@ -6,3 +6,4 @@ db
 backup
 .vscode
 architecture-diagram
+**/.env.dev
