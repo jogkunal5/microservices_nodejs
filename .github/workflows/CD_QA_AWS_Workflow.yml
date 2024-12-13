@@ -4,6 +4,9 @@ on:
     branches: [ "main" ]
   workflow_dispatch:
 
+env:
+  ACTIONS_STEP_DEBUG: true
+
 jobs:
   deploy_on_qa:
 
@@ -61,3 +64,5 @@ jobs:
           region: us-east-1
           deployment_package: deploy.zip
           use_existing_version_if_available: true
+        env:
+          DEBUG: true
