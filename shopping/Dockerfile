@@ -1,13 +1,19 @@
 FROM node:16
 
-WORKDIR /app/shopping
+# Set working directory
+WORKDIR /app
 
-COPY package.json .
+# Copy package.json and package-lock.json (if present)
+COPY shopping/package*.json ./shopping/
 
-RUN npm install
+# Install dependencies for the shopping service
+RUN npm install --prefix shopping
 
-COPY . .
+# Copy the shopping service code
+COPY shopping ./shopping
 
+# Expose the service port
 EXPOSE 8003
 
-CMD ["npm", "start"]
+# Start the service
+CMD ["npm", "start", "--prefix", "shopping"]
