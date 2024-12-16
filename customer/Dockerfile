@@ -1,19 +1,13 @@
 FROM node:16
 
-# Set working directory
-WORKDIR /app
+WORKDIR /app/customer
 
-# Copy package.json and package-lock.json (if present)
-COPY customer/package*.json ./customer/
+COPY package.json .
 
-# Install dependencies for the customer service
-RUN npm install --prefix customer
+RUN npm install
 
-# Copy the customer service code
-COPY customer ./customer
+COPY . .
 
-# Expose the service port
 EXPOSE 8001
 
-# Start the service
-CMD ["npm", "start", "--prefix", "customer"]
+CMD ["npm", "start"]
