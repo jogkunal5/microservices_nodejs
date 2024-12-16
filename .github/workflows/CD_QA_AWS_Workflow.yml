@@ -49,9 +49,27 @@ jobs:
           echo PORT=8003 >> .env
           cat .env
 
+    # Debugging: Verify the .env files and list files in the directory
+      - name: Check .env files and directory contents
+        run: |
+          echo "Verifying customer .env"
+          cat ./customer/.env
+          echo "Verifying products .env"
+          cat ./products/.env
+          echo "Verifying shopping .env"
+          cat ./shopping/.env
+          echo "Listing files in the root directory"
+          ls -alh
+          
       - name: Generate deployment package
         run: |
           zip -r deploy.zip . -x '*.git'
+
+      # Debugging: List files in the root directory before creating the deployment zip
+      - name: List files before deployment package
+        run: |
+          echo "Listing files before creating deployment package"
+          ls -alh
       
       - name: Deploy on Elastic beanstalk QA Env
         uses: einaregilsson/beanstalk-deploy@v20
@@ -66,3 +84,19 @@ jobs:
           use_existing_version_if_available: true
         env:
           DEBUG: true
+
+       # Additional debugging: Check for running containers in EBS
+      - name: Check Elastic Beanstalk Health and Logs
+        run: |
+          echo "Checking Elastic Beanstalk environment health"
+          aws elasticbeanstalk describe-environments --environment-names Rjscart-env --region us-east-1
+          echo "Fetching logs from Elastic Beanstalk"
+          aws elasticbeanstalk retrieve-environment-info --info-type tail --environment-name Rjscart-env --region us-east-1
+          
+      # Wait for deployment and check health of the environment
+      - name: Wait for environment to be healthy
+        run: |
+          echo "Waiting for Elastic Beanstalk environment to stabilize"
+          sleep 60  # Wait for 60 seconds before checking health status again
+          echo "Checking Elastic Beanstalk environment health status"
+          aws elasticbeanstalk describe-environments --environment-names Rjscart-env --region us-east-1
