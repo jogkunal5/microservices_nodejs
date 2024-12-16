@@ -1,19 +1,19 @@
 FROM node:16
 
-# Set working directory
-WORKDIR /app
+# Set the working directory inside the container
+WORKDIR /app/products
 
-# Copy package.json and package-lock.json (if present)
-COPY products/package*.json ./products/
+# Copy only the package.json first (best practice to cache dependencies separately)
+COPY package.json .
 
-# Install dependencies for the products service
-RUN npm install --prefix products
+# Install dependencies
+RUN npm install
 
-# Copy the products service code
-COPY products ./products
+# Copy the rest of the application code
+COPY . .
 
-# Expose the service port
+# Expose the port for the service
 EXPOSE 8002
 
-# Start the service
-CMD ["npm", "start", "--prefix", "products"]
+# Start the application
+CMD ["npm", "start"]
